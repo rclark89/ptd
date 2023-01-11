@@ -2,6 +2,11 @@ use std::io; //io is input/output library, taken from the std standard library
 use rand::Rng;
 use chrono::{TimeZone, Utc, DateTime};
 
+use std::fs::File;
+use std::io::Write;
+use std::fs::OpenOptions;
+
+
 pub fn randomcode() -> i64 {
 	let uniquecode = rand::thread_rng().gen_range(1..=10000);
 	println!("Permit reference {}",uniquecode);
@@ -133,4 +138,70 @@ pub fn water() -> String {
 		}		
 	
 	
+}
+
+
+
+pub fn new_logfile() -> String {
+	
+	
+	let mut log_input = String::new();
+		println!("Do you need to produce a new logfile?");
+	io::stdin()
+		.read_line(&mut log_input)
+		.expect("Failed to read line");
+		if log_input.trim().to_lowercase() == "y" {
+			let file_name = "logfile.txt";
+			let outputlog = "Logfile created".to_string();
+	
+			File::create("C:/Users/Ross/Documents/logfiles/logfile.txt") // To do: let user specify file name.
+			.expect("Error: failed to create file.");
+			
+			return outputlog
+		} else if log_input.trim().to_lowercase() == "n" {
+			println!("Logfile creation not required.");
+			let outputlog = "Logfile not required".to_string();
+			return outputlog
+		} else {
+			println!("Invalid input.");
+			let outputlog = "Invalid input".to_string();
+			return outputlog
+		}
+
+			
+		
+}
+
+//pub struct log_file_update
+
+pub fn append_to_log() -> String {
+	
+	let mut update_input = String::new();
+		println!("Add to logfile?");
+	io::stdin()
+		.read_line(&mut update_input)
+		.expect("Failed to read line");
+		if update_input.trim().to_lowercase() == "y" {
+			let updatelog = "Logfile updated".to_string();
+
+			
+			let mut file = OpenOptions::new()
+				.write(true)
+				.append(true)
+				.open("C:/Users/Ross/Documents/logfiles/logfile.txt") // To do: let user specify file name.
+				.unwrap();
+			file.write_all(b"Logfile entry 1")
+			.expect("Error: failed to create file.");
+			
+			return updatelog
+		} else if update_input.trim().to_lowercase() == "n" {
+			println!("Logfile creation not required.");
+			let updatelog = "Logfile not updated".to_string();
+			return updatelog
+		} else {
+			println!("Invalid input.");
+			let updatelog = "Invalid input".to_string();
+			return updatelog
+		}
+
 }

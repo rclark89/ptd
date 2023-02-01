@@ -1,10 +1,10 @@
 use std::io; //io is input/output library, taken from the std standard library
 use rand::Rng;
 use chrono::{TimeZone, Utc, DateTime};
-
 use std::fs::File;
 use std::io::Write;
 use std::fs::OpenOptions;
+//use std::str::as_bytes;
 
 
 pub fn randomcode() -> i64 {
@@ -174,7 +174,7 @@ pub fn new_logfile() -> String {
 
 //pub struct log_file_update
 
-pub fn append_to_log() -> String {
+pub fn append_to_log(user:String,dtime:DateTime<Utc>,permitno:i64) -> String {
 	
 	let mut update_input = String::new();
 		println!("Add to logfile?");
@@ -190,7 +190,13 @@ pub fn append_to_log() -> String {
 				.append(true)
 				.open("C:/Users/Ross/Documents/logfiles/logfile.txt") // To do: let user specify file name.
 				.unwrap();
-			file.write_all(b"Logfile entry 1")
+			
+			let logfile_contents = format!("Logfile entry 1 \n
+			{}\n
+			{}\n
+			{}\n", &user,&dtime,&permitno);
+			
+			file.write_all(logfile_contents.as_bytes())
 			.expect("Error: failed to create file.");
 			
 			return updatelog
@@ -203,5 +209,30 @@ pub fn append_to_log() -> String {
 			let updatelog = "Invalid input".to_string();
 			return updatelog
 		}
-
 }
+		
+/* pub fn emaileng() -> String{
+	
+	let mut email1 = String::new();
+		println!("Please input your email address.");
+		io::stdin() //calls stdin user input function from io module.
+			.read_line(&mut email1) //passing &mut guess as the argument to read_line method.
+			// read_line takes user input and appends to a string. & indicates this is a reference.
+			.expect("Failed to read email address"); //Error handling.
+			let email1output = email1.to_string();
+			return email1output;
+}
+			
+pub fn emailsup() -> String{
+			
+	let mut email2 = String::new();
+		println!("Please input your supervisor's email address.");
+		io::stdin() //calls stdin user input function from io module.
+			.read_line(&mut email2) //passing &mut guess as the argument to read_line method.
+			// read_line takes user input and appends to a string. & indicates this is a reference.
+			.expect("Failed to read email address"); //Error handling.
+			let email2output = email2.to_string();
+			return email2output;
+	
+	
+}	 */
